@@ -86,6 +86,14 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--mut);font-siz
 .fg nav,.fg div div{all:unset}
 .fl{display:flex;gap:16px;flex-wrap:wrap}
 .fl a{color:var(--mut);text-decoration:none}.fl a:hover{color:var(--fg)}
+.cv{position:fixed;inset:0;z-index:40;background:var(--bg);overflow:auto;opacity:0;transform:translateY(18px);pointer-events:none;visibility:hidden;transition:opacity .3s,transform .3s,visibility .3s}
+.cv.o{opacity:1;transform:none;pointer-events:auto;visibility:visible}
+.cvb{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:calc(10px + env(safe-area-inset-top,0px)) 20px 10px;z-index:2}
+.cvw{max-width:760px;margin:0 auto;padding:32px 20px 80px}
+.cvw h1{font-size:clamp(30px,5vw,46px);letter-spacing:-.02em;margin:8px 0 12px}
+.cvs{margin-top:44px}.cvs h2{font-size:24px;margin-bottom:12px}.cvs h2 span{color:var(--ac);font-size:15px;margin-right:10px}
+.cvs ul{margin:0;padding-left:20px;color:var(--mut)}.cvs p{color:var(--mut);margin:0}
+.fl2{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.fl2 .chip[aria-pressed=true]{background:var(--ac);color:#fff;border-color:var(--ac)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style></head><body>
 <nav id="nav"><div class="w"><b>Rashi Jain</b>
@@ -165,13 +173,14 @@ footer{border-top:1px solid var(--line);padding:32px 0;color:var(--mut);font-siz
 <div class="fl"><a href="https://www.linkedin.com/in/rashijain123/" target="_blank" rel="noopener" data-t="linkedin_click">LinkedIn</a><a href="https://github.com/rashijain1" target="_blank" rel="noopener" data-t="github_click">GitHub</a><a href="mailto:rashi.j95@gmail.com" data-t="email_click">Email</a></div></div>
 Built with curiosity, data, and a lot of iteration.<br>© <span id="yr"></span> Rashi Jain. Press ⌘K / Ctrl+K for a shortcut menu.</div></footer>
 
+<div class="cv" id="cv" role="dialog" aria-modal="true" aria-label="Case study"><div class="cvb"><button class="btn" id="cvx">← Back to portfolio</button></div><div class="cvw" id="cvc"></div></div>
 <div id="cmd" role="dialog" aria-modal="true" aria-label="Command menu"><div>
 <a href="#work">View work</a><a href="#about">About me</a><a href="#ai">Building with AI</a><a href="#metrics">Metrics</a><a href="#experience">Experience</a><a href="#resume">Resume</a><a href="#mentoring">Mentorship &amp; community</a><a href="https://www.linkedin.com/in/rashijain123/" target="_blank" rel="noopener">LinkedIn</a><a href="#contact">Contact</a></div></div>
 
 <script>
 /* ===== Centralized content: replace with your own (maps to /data/*.ts in the Next.js build) ===== */
 const DATA={
-metrics:[{v:9,p:"",s:"+",l:"Years building products"},{v:5,p:"",s:"",l:"Pixel flagship generations"},{v:95,p:"",s:"%+",l:"Tuning turnaround cut"},{v:150,p:"",s:"",l:"Engineers on one dashboard"},{v:74,p:"",s:"+",l:"Candidates mentored"}],
+metrics:[{v:9,p:"",s:"+",l:"Years in camera and AI platforms"},{v:5,p:"",s:"",l:"Pixel flagship generations"},{v:95,p:"",s:"%+",l:"Tuning turnaround cut"},{v:150,p:"",s:"",l:"Engineers on one dashboard"},{v:74,p:"",s:"+",l:"Candidates mentored"}],
 principles:[["Start with the problem","Understand the bottleneck before falling for a solution."],["Build with evidence","Use EVALS, golden datasets, and data to decide."],["Ship, learn, iterate","The first version is an experiment. I shipped one MVP in a week."],["Optimize for outcomes","Features are not outcomes. Measure the change they create."],["Earn trust with HITL","Show diffs and keep humans in the loop so users trust automation."],["AI where it matters","Use AI to remove friction and add leverage, not because it exists."]],
 tools:[["Product","0-to-1 discovery, PRDs, JTBD and personas, RICE and P0/P1/P2 roadmaps, North Star metrics, OKRs"],["Analytics","SQL, Mixpanel, B2B funnel and bug triage analytics, benchmarking, ISB business analytics"],["AI","Agentic workflows (SKILL.md), prompt libraries, EVALS, human-in-the-loop UX, Google AI Studio, Claude, Gemini, n8n"],["Prototyping","React, Node.js/Express, Python, C#/WPF, SQL, Firebase, Supabase, Lovable"],["Collaboration","Jira, Figma, Slack"],["Credentials","IIT Roorkee x Masai: PM using Applied AI (2026). ISB: AMPBA (2021). B.Tech CSE, Banasthali (2017)"]],
 experience:[["Google","Technical Product Builder & Camera Autofocus Lead, Pixel Camera","Dec 2022 – Present · Taipei","Shipped self-initiated 0-to-1 AI platforms for internal engineers and led camera autofocus across 5 Pixel flagship generations, with zero release blockers on Pixel 10."],["OnePlus R&D","Lead Engineer, 3A Camera Product & Feature Lead","Apr 2021 – Nov 2022 · Hyderabad","Led camera launches across OnePlus 9, 7, and Nord. Productized TOF sensor fusion to fix low-light focus lag. Employee of the Month. Mentored 5+ engineers."],["Qualcomm","Engineer, Sub-Lead & Backend Developer","Apr 2019 – Apr 2021 · Hyderabad","Built an automated triage product for ~500 daily camera tickets and delivered Snapdragon SDK features for Samsung, OnePlus, Oppo, and Vivo. Won Qual Star, QWoman, and QThanks awards."],["Samsung R&D Institute","Software Engineer, Founding 3A Team","Nov 2017 – Mar 2019 · Bangalore, Suwon","Co-established the 3A camera group and led onsite flagship launch validation at Samsung HQ. Authored 2 patents."],["Gut-health startup","Co-founder","Jun 2025 – Jun 2026","Built the MVP and website, scaled data collection across multiple labs, filed a joint patent, and completed an exit."]],
@@ -204,13 +213,57 @@ if(!matchMedia('(prefers-reduced-motion:reduce)').matches)requestAnimationFrame(
 $('#prin').innerHTML=DATA.principles.map(p=>`<div class="card"><h3>${p[0]}</h3><p>${p[1]}</p></div>`).join('');
 $('#tools').innerHTML=DATA.tools.map(t=>`<div class="card"><h3>${t[0]}</h3><p>${t[1]}</p></div>`).join('');
 $('#exp').innerHTML=DATA.experience.map(x=>`<div><h3>${x[1]}, ${x[0]}</h3><small>${x[2]}</small><p style="margin:6px 0 0;color:var(--mut)">${x[3]}</p></div>`).join('');
+
+/* ===== Full case studies (sections with no content are skipped) ===== */
+const CASES={
+"camera-tuning":{tag:"AI · Automation · 0 → 1",tl:"Self-initiated · Google Pixel Camera",
+metrics:[["95%+","Faster turnaround"],["Week → 1 min","Per engineer, camera, revision"],["0%","Syntax regressions"],["3","Product tiers"]],
+Context:"Camera tuning had to be redone for every camera on every hardware revision, and it was done by hand.",
+Problem:"Each revision cost a week of manual effort per engineer per camera.",
+Why:"The cost repeats with every hardware revision, so the time lost scales with the number of cameras and revisions.",
+Definition:["User: interactive camera tuners and internal coding agents","Problem: manual, repetitive tuning updates","Impact: a week of effort per engineer, camera, and revision"],
+Strategy:["Serve two distinct personas with different needs","Make automation trustworthy before making it autonomous","Define a V3 roadmap toward zero-touch change list generation"],
+Solution:"A 3-tier product I conceived, scoped, wrote the PRD for, and shipped with AI-assisted development.",
+Tiers:["React + Express web app with live side-by-side diff previews","Autonomous AI agent skill (SKILL.md) that applies tuning updates from natural-language prompts","Platform EVALS with human review and a golden dataset"],
+Flow:[["Request","A tuner or agent asks for a tuning change in natural language."],["Agent skill","The SKILL.md skill applies the update."],["Diff preview","The web app shows live side-by-side diffs."],["Human review","A person approves, which builds trust."],["EVALS","The golden dataset checks the result."]],
+Tradeoffs:"Full autonomy versus human-in-the-loop: I led with live diff previews as a trust builder for interactive tuners, and kept human review inside the EVALS.",
+Outcome:"Per-revision turnaround fell by more than 95%, from hours to under a minute, with 0% syntax regressions.",
+Next:"V3 roadmap: zero-touch change list generation."},
+"iq-dashboard":{tag:"Analytics · Product · 0 → 1",tl:"Google Pixel Camera",
+metrics:[["85%","Higher relevance"],["150","Engineers served"],["22+","Benchmarks unified"],["1 week","To MVP"]],
+Context:"Image quality results came from many benchmarks, including DXO and internal evaluation scores, alongside separate bug tracking.",
+Problem:"Comparing benchmark progress and tracing bugs took weeks of effort.",
+Discovery:["Worked with the ISP, AEC, and AWB teams to understand what each needed","Benchmarked competitor camera image quality"],
+Definition:["User: image quality and camera engineers","Problem: results and bugs lived in separate places","Impact: weeks of effort per analysis"],
+Strategy:["One zero-install web portal for decisions","Show benchmark progression next to bug root causes"],
+Solution:"A centralized decision-support portal uniting 22+ benchmarks with deep-dive bug evaluation and root-cause tracking.",
+MVP:"I defined clear requirements, groomed the backlog, and assisted with execution and testing so the MVP launched in a week.",
+Outcome:"Weeks of effort became minutes, and relevance improved by 85% for 150 engineers after cross-team input."}
+};
+const CS_ORDER=[["Context","Context"],["Problem","Problem"],["Why","Why it mattered"],["Discovery","Discovery"],["Definition","Problem definition"],["Strategy","Product strategy"],["Solution","Solution"],["Tiers","What I built"],["MVP","MVP"],["Flow","How it fits together"],["Tradeoffs","Trade-offs"],["Outcome","Outcome"],["Next","What's next"]];
+const cv=$('#cv'),cvc=$('#cvc');let lastF=null;
+function openCS(slug){const c=CASES[slug],p=DATA.projects.find(x=>x.slug===slug);let n=0;lastF=document.activeElement;
+const sec=([k,l])=>{const v=c[k];if(!v)return'';n++;let b='';
+if(k==='Flow')b=`<div class="fl2" role="group" aria-label="Flow">${v.map((s,i)=>`<button class="chip" aria-pressed="${!i}" data-i="${i}">${i+1}. ${s[0]}</button>`).join('')}</div><div class="card" style="margin-top:12px"><p id="flnote">${v[0][1]}</p></div>`;
+else b=Array.isArray(v)?`<ul>${v.map(x=>`<li>${x}</li>`).join('')}</ul>`:`<p>${v}</p>`;
+return`<div class="cvs"><h2><span>${String(n).padStart(2,'0')}</span>${l}</h2>${b}</div>`};
+cvc.innerHTML=`<span class="tag">${c.tag}</span><h1>${p.title}</h1><p style="color:var(--mut)">${c.tl} · ${p.role}</p>
+<div class="grid" style="margin-top:24px">${c.metrics.map(m=>`<div class="card"><div class="m"><div><b>${m[0]}</b><small>${m[1]}</small></div></div></div>`).join('')}</div>
+${CS_ORDER.map(sec).join('')}
+<div class="cvs"><a class="btn p" href="#contact" id="cvcta" data-t="cta_case_study">Want to discuss a similar problem?</a></div>`;
+const fl=cvc.querySelector('.fl2');if(fl)fl.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;fl.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));$('#flnote').textContent=c.Flow[+b.dataset.i][1]};
+cv.classList.add('o');cv.scrollTop=0;document.body.style.overflow='hidden';$('#cvx').focus();track('case_study_opened',{slug})}
+function closeCS(){cv.classList.remove('o');document.body.style.overflow='';if(lastF)lastF.focus()}
+$('#cvx').onclick=closeCS;$('#cv').addEventListener('click',e=>{if(e.target.id==='cvcta')closeCS()});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&cv.classList.contains('o'))closeCS()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-cs]');if(b)openCS(b.dataset.cs)});
 /* projects + filters */
 const cats=["All",...new Set(DATA.projects.flatMap(p=>p.cat))];
 $('#chips').innerHTML=cats.map((c,k)=>`<button class="chip" aria-pressed="${!k}">${c}</button>`).join('');
 $('#projs').innerHTML=DATA.projects.map(p=>`<article class="card proj" data-c="${p.cat.join('|')}"><span class="tag">${p.cat.join(', ')}</span><h3>${p.title}</h3>
 <p><b>Problem.</b> ${p.problem}</p><p><b>Solution.</b> ${p.solution}</p><p><b>Role.</b> ${p.role}</p>
 <div class="m">${p.metrics.map(m=>`<div><b>${m[0]}</b><small>${m[1]}</small></div>`).join('')}</div><p><b>Outcome.</b> ${p.outcome}</p>
-<details ontoggle="this.open&&track('case_study_opened',{slug:'${p.slug}'})"><summary>View case study</summary><dl>${Object.entries(p.cs).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></details></article>`).join('');
+${CASES[p.slug]?`<button class="btn p" data-cs="${p.slug}">View full case study</button>`:`<details ontoggle="this.open&&track('case_study_opened',{slug:'${p.slug}'})"><summary>View case study</summary><dl>${Object.entries(p.cs).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl></details>`}</article>`).join('');
 $('#chips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;
 document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',c===b));track('project_filter',{c:b.textContent});
 document.querySelectorAll('.proj').forEach(a=>a.classList.toggle('hide',b.textContent!=='All'&&!a.dataset.c.split('|').includes(b.textContent)))};
